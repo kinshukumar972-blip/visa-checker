@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 # Prevent spam if checked frequently
 last_check_time = 0
-MIN_INTERVAL = 3600  # seconds (1 hour)
+MIN_INTERVAL = 300  # seconds (5 minutes)
 
 
 def send_telegram(message):
@@ -88,10 +88,16 @@ def check_visa():
 @app.route("/", methods=["GET", "HEAD"])
 def home():
     """Endpoint for browser and UptimeRobot"""
-    result = check_visa()
     if request.method == "HEAD":
-        # Return lightweight response for UptimeRobot
         return ("OK", 200)
+    result = check_visa()
+    return f"<h3>{result}</h3>"
+
+
+@app.route("/check", methods=["GET"])
+def force_check():
+    """Endpoint to force a visa check (use this for UptimeRobot)"""
+    result = check_visa()
     return f"<h3>{result}</h3>"
 
 
