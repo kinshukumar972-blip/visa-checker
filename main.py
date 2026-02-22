@@ -13,12 +13,21 @@ def send_telegram(message):
     requests.post(url, data=payload)
 
 def check_visa():
+    """Check if SEARCH_NUMBER appears in the ODS file text"""
     try:
-        response = requests.get(FILE_URL, timeout=20)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/122.0 Safari/537.36",
+            "Accept": "*/*"
+        }
+        response = requests.get(FILE_URL, headers=headers, timeout=20)
         response.raise_for_status()
         content = response.content.decode("latin1", errors="ignore")
+
         found = SEARCH_NUMBER in content
         time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
         if found:
             send_telegram(f"✅ Visa number {SEARCH_NUMBER} FOUND at {time}.")
         else:
