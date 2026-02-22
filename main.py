@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 # Prevent spam if checked frequently
 last_check_time = 0
-MIN_INTERVAL = 300  # seconds (5 minutes)
+MIN_INTERVAL = 86400  # seconds (24 hours)
 
 
 def send_telegram(message):
@@ -36,7 +36,7 @@ def check_visa():
     """Fetch and check the visa number inside the ODS file"""
     global last_check_time
 
-    # Rate limit (only once per hour)
+    # Rate limit (only once per 24 hours)
     if time.time() - last_check_time < MIN_INTERVAL:
         return f"⏱ Skipped duplicate run at {datetime.now()}"
 
