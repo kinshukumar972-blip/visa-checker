@@ -61,7 +61,7 @@ def check_visa():
         for table in doc.getElementsByType(Table):
             for row in table.getElementsByType(TableRow):
                 for cell in row.getElementsByType(TableCell):
-                    text_content = "".join(t.data for t in cell.getElementsByType(P))
+                    text_content = "".join(str(p) for p in cell.getElementsByType(P))
                     if SEARCH_NUMBER in text_content:
                         found = True
                         break
